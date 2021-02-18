@@ -1,0 +1,22 @@
+{
+  "name": "hbotplus",
+  "version": "1.0.0",
+  "requires": true,
+  "description": "",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "enmap": "^5.3.3",
+    "express": "^4.17.1"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "main": "h.js",
+  "scripts": {
+    "start": "node h.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
