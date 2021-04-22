@@ -1,74 +1,132 @@
-module.exports = async (client, message, member) => {
-	var array = message.content.split(" "),
+module.exports = async (client, msg, member) => {
+	var array = msg.content.split(" "),
 		args = array.slice(1);
 	const talkedRecently = new Set();
 
-  console.log("hello?")
-
 	// Go aways bots and people who are trying to use commands on dm
-	if (message.author.bot || message.channel.type !== "text") return;
+	if (msg.author.bot || msg.channel.type !== "text") return;
 
-  // Check if the message is in hwords and delete any duplicate hword or non-h word
+  // Check if the msg is in hwords and delete any duplicate hword or non-h word
   CheckHWords();
   CheckHPolitics();
 
 	// No prefix no fun
-	if (!message.content.startsWith(client.confiq.prefix)) return;
+	if (!msg.content.startsWith(client.confiq.prefix)) return;
 
+  // If commands are disabled, don't execute unless you're authorised
+  if (!client.confiq.authorised.includes(msg.author.id) && client.confiq.commsdisabled){
+  	msg.channel.send({
+      embed: {
+        color: parseInt(client.confiq.embedColor),
+        title: "Sorry, commands are currently disabled and only available to the hbot+ admins.",
+      footer: {
+          text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
+          icon_url: client.confiq.pfpurl
+        }
+      }
+	  })
+    return;
+  }
 
 	// Get command and execute it
-	if (talkedRecently.has(message.author.id) && !message.member.roles.cache.some(r => r.name === "hbot+ manager")) {
-		message.reply({
+	if (talkedRecently.has(msg.author.id) && !msg.member.roles.cache.some(r => r.name === "hbot+ manager")) {
+		msg.reply({
 			embed: {
 				color: ff1d00,
 				title: "Too Fast",
 				description: "Please wait 10 seconds and try aqain."
 			}
 		});
-		message.delete();
+		msg.delete();
 		return;
 	}
 	else {
-		let cmd = client.cmds.get(
+		let cmd = client.commands.get(
 			array[0].replace(client.confiq.prefix, "").toLowerCase()
 		);
 
-		talkedRecently.add(message.author.id);
+		talkedRecently.add(msg.author.id);
 		setTimeout(() => {
-			talkedRecently.delete(message.author.id);
+			talkedRecently.delete(msg.author.id);
 		}, 10000);
-    if (!cmd) message.reply("404 Command not found.");
+    if (!cmd) msg.channel.send({
+      embed: {
+        color: parseInt(client.confiq.embedColor),
+        title: `Whoops! This command does not exist.`,
+        description: `Use \`${client.confiq.prefix}help\` to qet a list of commands.`,
+        footer: {
+            text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
+            icon_url: client.confiq.pfpurl
+          }
+        }
+	  })
 
-	  cmd.run(client, message, args);
-		//return;
+	  cmd.run(client, msg, args);
 	}
 
   function CheckHWords()
   {
-    if (message.channel.id == "673294129031151677") {
-      if (message.content.startsWith("H") || message.content.startsWith("h")) {
-        if (!message.content.startsWith("http") && !message.content.includes(" ")) {
-          var fs = require('fs');
-          var hwtxt = require(`../h-words.json`)
-          if (hwtxt.includes(message.content.toUpperCase())) {
-            message.delete();
-          }
-          else {
-            hwtxt[hwtxt.length] = message.content.toUpperCase();
-            fs.writeFile('./h-words.json', JSON.stringify(hwtxt, null, 2), (err) => { if (err) throw err; });
-          }
+    if (msg.channel.id == "673294129031151677") {
+      if (msg.content.startsWith("H") || msg.content.startsWith("h")) {
+        if (/^[a-zA-Z]+$/i.test(msg.content)) {
+          client.db.get("hcommunitywords").then(hwtxt => {
+            if (hwtxt.includes(msg.content.toUpperCase())) {
+              msg.channel.send({
+                embed: {
+                  color: parseInt(client.confiq.embedColor),
+                  title: "Not a valid hword! Your word has to start with h, only have a-z characters, and it must be unique.",
+                footer: {
+                    text: `hbot+ - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
+                    icon_url: client.confiq.pfpurl
+                  }
+                }
+              }).then(mseg => {
+                mseg.delete({ timeout: 4000 })
+              })
+              msg.delete();
+            }
+            else {
+              hwtxt.push(msg.content.toUpperCase());
+              client.db.set("hcommunitywords", hwtxt);
+            }
+          })
         } else { 
-          message.delete(); 
-          }
+          msg.channel.send({
+            embed: {
+              color: parseInt(client.confiq.embedColor),
+              title: "Not a valid hword! Your word has to start with h, only have a-z characters, and it must be unique.",
+            footer: {
+                text: `hbot+ - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
+                icon_url: client.confiq.pfpurl
+              }
+            }
+          }).then(mseg => {
+            mseg.delete({ timeout: 4000 })
+          })
+          msg.delete(); 
+        }
 
       } else {
-        message.delete();
+        msg.channel.send({
+          embed: {
+            color: parseInt(client.confiq.embedColor),
+            title: "Not a valid hword! Your word has to start with h, only have a-z characters, and it must be unique.",
+            footer: {
+              text: `hbot+ - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
+              icon_url: client.confiq.pfpurl
+            }
+          }
+        }).then(mseg => {
+          mseg.delete({ timeout: 2000 })
+        })
+        msg.delete();
       }
     }
   }
+
   function CheckHPolitics(){
-    if(message.channel.id == "809152384936443904" && message.content != "h is better than g"){
-      message.delete();
+    if(msg.channel.id == "809152384936443904" && msg.content != "h is better than g"){
+      msg.delete();
     }
   }
 };

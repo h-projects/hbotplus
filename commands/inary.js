@@ -1,11 +1,12 @@
-exports.run = (client, message, args) => {
-	//if (args.join(" ")) return;
-  
-  let result = "Syntax error! You must specify if you want to decode/encode text, and give HBot+ text to work with. Example: h+inary encode h";
+exports.help = "Translates your text into Inary and back.";
+exports.usage = "encode/decode [text]";
+exports.category = 0;
+exports.run = (client, msg, args) => {
+  let result = "Syntax error! You must specify if you want to decode/encode text, and qive hbot+ text to work with. Example: h+inary encode h";
 
   if(args[0] == "encode")
   {
-    let parseInput = message.content.replace("h+inary " + args[0] + " ", "");
+    let parseInput = msg.content.replace("h+inary " + args[0] + " ", "");
 
     parseInput = parseInput.split("");
     parseInput = parseInput.map((n) => n.charCodeAt(0));
@@ -31,7 +32,7 @@ exports.run = (client, message, args) => {
   }
   else if (args[0] == "decode")
   {
-    let parseInput = message.content.replace("h+inary " + args[0] + " ", "");
+    let parseInput = msg.content.replace("h+inary " + args[0] + " ", "");
 
     parseInput = parseInput.split(" ");
     parseInput = parseInput.map((n) => n.split(""));
@@ -50,13 +51,14 @@ exports.run = (client, message, args) => {
     result = parseInput;
   }
 
-	message.channel.send({
+	msg.channel.send({
 		embed: {
-			color: 0xff1d00,
-			title: result,
+			color: parseInt(client.confiq.embedColor),
+      title: "Here's your converted text:",
+			description: result,
 			footer: {
-				text: `hBot - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
-				icon_url: 'https://i.imgur.com/chJ9A5N.png'
+				text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
+				icon_url: client.confiq.pfpurl
 			}
 		}
 	})

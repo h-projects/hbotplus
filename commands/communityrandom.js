@@ -1,17 +1,22 @@
-exports.run = (client, message, args) => {
+exports.help = "Qives you a random word from #h-words";
+exports.usage = "";
+exports.category = 0;
+exports.run = (client, msg, args) => {
 	if (args.join(" ")) return;
 	var fs = require('fs');
 
-	let data = require("../h-words.json");
-	let rand = Math.floor(Math.random() * data.length);
-	message.channel.send({
-		embed: {
-			color: 0xff1d00,
-			title: data[rand].toLowerCase(),
-		footer: {
-				text: `hBot - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
-				icon_url: 'https://i.imgur.com/chJ9A5N.png'
-			}
-		}
-	})
+	client.db.get("hcommunitywords").then(hwtxt => {
+    let rand = Math.floor(Math.random() * hwtxt.length);
+
+    msg.channel.send({
+      embed: {
+        color: parseInt(client.confiq.embedColor),
+        title: hwtxt[rand].toLowerCase(),
+      footer: {
+          text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
+          icon_url: client.confiq.pfpurl
+        }
+      }
+    })
+  })
 }

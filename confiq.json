@@ -1,5 +1,6 @@
 {
 	"prefix": "h+",
+  "pfpurl": "https://cdn.discordapp.com/attachments/576823125426176010/827550100804075550/hbotbig.png",
 	"footers": [   
     "h",
     "do not use the forbidden letter",
@@ -11,5 +12,26 @@
     "pro tip: use q instead of the seventh letter",
     "h is love, h is life",
     "rip the og hbot"
-	]
+	],
+  "loqschan":"684830225477140487",
+  "authorised":[
+    "535576566386655232"
+  ],
+  "rolebypassers":
+  [
+    "547171713163722783",
+    "547165681737531392"
+  ],
+  "helpcats": [
+    {
+      "name": "general",
+      "description": "Fun commands"
+    },
+    {
+      "name": "owner",
+      "description": "Bot admin only commands"
+    }
+  ],
+  "commsdisabled":false,
+  "embedColor":"0xAFAFAF"
 } 

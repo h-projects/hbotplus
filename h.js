@@ -1,19 +1,11 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 const enmap = require("enmap");
 const fs = require("fs");
+const Database = require("@replit/database");
 client.disc = require("discord.js");
 client.confiq = require("./confiq.json");
-
-client.on('ready', () => {
-	client.user.setPresence({
-		game: {
-			name: 'h',
-			type: "PLAYING"
-		}
-	});
-	console.log(`Logged in as ${client.user.tag}!`);
-});
+client.db = new Database();
 
 fs.readdir("./actions/", (err, files) => {
 	console.log("Loading actions...");
@@ -28,7 +20,7 @@ fs.readdir("./actions/", (err, files) => {
 	console.log("Loaded actions!");
 });
 
-client.cmds = new enmap();
+client.commands = new enmap();
 fs.readdir("./commands/", (err, files) => {
 	console.log("Loading commands...");
 	if (err) return console.eror(err);
@@ -37,7 +29,7 @@ fs.readdir("./commands/", (err, files) => {
 		let props = require(`./commands/${file}`);
 		let eventName = file.split(".")[0];
 		let commandName = file.split(".")[0];
-		client.cmds.set(commandName, props);
+		client.commands.set(commandName, props);
 	});
 	console.log("Loaded commands!");
 });
@@ -47,12 +39,9 @@ const http = require('http');
 const express = require('express');
 const app = express();
 app.get("/", (request, response) => {
-	response.sendStatus(200);
+  console.log(Date.now() + " Ping Received");
+  response.sendStatus(200);
 });
-
 app.listen(process.env.PORT);
-setInterval(() => {
-	http.get(`http://hbotplus.juangenial452.repl.co/`);
-}, 280000);
 
 client.login(process.env.TOKEN);
