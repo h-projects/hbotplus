@@ -1,5 +1,5 @@
 module.exports = async (client, oldMessage, newMessage) => {
-  if (message.partial) {
+  if (newMessage.partial) {
     await newMessage.fetch();
   }
 

@@ -7,8 +7,8 @@ module.exports = async (client, msg, member) => {
 	if (msg.author.bot || msg.channel.type !== "text") return;
 
   // Check if the msg is in hwords and delete any duplicate hword or non-h word
-  CheckHWords();
-  CheckHPolitics();
+  if (CheckHWords()) return;
+  if (CheckHPolitics()) return;
 
 	// No prefix no fun
 	if (!msg.content.startsWith(client.confiq.prefix)) return;
@@ -84,6 +84,7 @@ module.exports = async (client, msg, member) => {
                 mseg.delete({ timeout: 4000 })
               })
               msg.delete();
+              return true;
             }
             else {
               hwtxt.push(msg.content.toUpperCase());
@@ -104,6 +105,7 @@ module.exports = async (client, msg, member) => {
             mseg.delete({ timeout: 4000 })
           })
           msg.delete(); 
+          return true;
         }
 
       } else {
@@ -120,6 +122,7 @@ module.exports = async (client, msg, member) => {
           mseg.delete({ timeout: 2000 })
         })
         msg.delete();
+        return true;
       }
     }
   }
@@ -127,6 +130,7 @@ module.exports = async (client, msg, member) => {
   function CheckHPolitics(){
     if(msg.channel.id == "809152384936443904" && msg.content != "h is better than g"){
       msg.delete();
+      return true;
     }
   }
 };
