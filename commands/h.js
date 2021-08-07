@@ -5,8 +5,8 @@ exports.run = (client, msg, args) => {
 	if (args.join(" ")) return;
 	var fs = require('fs');
   
-	msg.channel.send({
-		embed: {
+	return({
+      embeds: [{
 			color: parseInt(client.confiq.embedColor),
 			title: "h",
       image: {
@@ -16,6 +16,6 @@ exports.run = (client, msg, args) => {
 				text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
 				icon_url: client.confiq.pfpurl
 			}
-		}
+		}]
 	})
 }

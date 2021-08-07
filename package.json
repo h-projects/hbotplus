@@ -5,9 +5,10 @@
   "description": "",
   "dependencies": {
     "@replit/database": "^2.0.0",
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.0.0",
     "enmap": "^5.3.3",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "node": "^16.6.1"
   },
   "engines": {
     "node": "*"

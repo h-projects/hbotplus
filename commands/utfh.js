@@ -8,7 +8,7 @@ exports.run = (client, msg, args) => {
 
   if(args[0] == "encode")
   {
-    let parseInput = msg.content.replace("h+utfh " + args[0] + " ", "");
+    let parseInput = args.slice(1).join(" ");
 
     parseInput = hBinary(parseInput);
 
@@ -16,15 +16,15 @@ exports.run = (client, msg, args) => {
   }
   else if (args[0] == "decode")
   {
-    let parseInput = msg.content.replace("h+utfh " + args[0] + " ", "");
+    let parseInput = args.slice(1).join(" ");
 
     parseInput = text(parseInput);
     
     result = parseInput;
   }
 
-	msg.channel.send({
-		embed: {
+	return({
+    embeds: [{
 			color: parseInt(client.confiq.embedColor),
       title: "Here's your converted text:",
 			description: result,
@@ -32,7 +32,7 @@ exports.run = (client, msg, args) => {
 				text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
 				icon_url: client.confiq.pfpurl
 			}
-		}
+		}]
 	})
 
   function convertNum(num) {

@@ -17,12 +17,12 @@ exports.run = (client, msg, args) => {
       allcmds = `${allcmds}${catcmds}\n`;
     }
     })
-    msg.channel.send(`\`\`\`fix\nhbot+ help\n----------\n\n${allcmds}\`\`\``)
+    return(`\`\`\`fix\nhbot+ help\n----------\n\n${allcmds}\`\`\``)
   }
   else
   {
     let cmd = client.commands.get(args[0]);
-      msg.channel.send({embed:{
+    return({embed:{
         color: parseInt(client.confiq.embedColor),
         title: `${client.confiq.prefix}${args[0]} Help`,
         fields: [

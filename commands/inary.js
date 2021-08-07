@@ -6,7 +6,7 @@ exports.run = (client, msg, args) => {
 
   if(args[0] == "encode")
   {
-    let parseInput = msg.content.replace("h+inary " + args[0] + " ", "");
+    let parseInput = args.slice(1).join(" ");
 
     parseInput = parseInput.split("");
     parseInput = parseInput.map((n) => n.charCodeAt(0));
@@ -32,7 +32,7 @@ exports.run = (client, msg, args) => {
   }
   else if (args[0] == "decode")
   {
-    let parseInput = msg.content.replace("h+inary " + args[0] + " ", "");
+    let parseInput = args.slice(1).join(" ");
 
     parseInput = parseInput.split(" ");
     parseInput = parseInput.map((n) => n.split(""));
@@ -51,8 +51,8 @@ exports.run = (client, msg, args) => {
     result = parseInput;
   }
 
-	msg.channel.send({
-		embed: {
+	return({
+      embeds: [{
 			color: parseInt(client.confiq.embedColor),
       title: "Here's your converted text:",
 			description: result,
@@ -60,6 +60,6 @@ exports.run = (client, msg, args) => {
 				text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
 				icon_url: client.confiq.pfpurl
 			}
-		}
+		}]
 	})
 }

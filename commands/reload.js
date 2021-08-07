@@ -22,18 +22,18 @@ exports.run = (client, msg, args) => {
       });
     });
     
-    msg.channel.send({embed:{
+    return({embeds: [{
           color: parseInt(client.confiq.embedColor),
           title: `hbot+ has been reloaded!`,
           footer: {
                     text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.ceil(Math.random() * client.confiq.footers.length)]}`, 
                     icon_url : client.confiq.pfpurl
           }
-    }});
+    }]});
   }
   else
   {
-    msg.channel.send({embed:{
+    return({embed:{
           color: parseInt(client.confiq.embedColor),
           title: `Sorry, you aren't authorised to use this command.`,
           footer: {

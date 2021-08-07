@@ -8,15 +8,15 @@ exports.run = (client, msg, args) => {
 	client.db.get("hcommunitywords").then(hwtxt => {
     let rand = Math.floor(Math.random() * hwtxt.length);
 
-    msg.channel.send({
-      embed: {
+    return({
+      embeds: [{
         color: parseInt(client.confiq.embedColor),
         title: hwtxt[rand].toLowerCase(),
-      footer: {
+        footer: {
           text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
           icon_url: client.confiq.pfpurl
         }
-      }
+      }]
     })
   })
 }

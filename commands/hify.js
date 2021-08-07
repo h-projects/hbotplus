@@ -6,7 +6,7 @@ exports.run = (client, msg, args) => {
     return ['a', 'e', 'i', 'o', 'u', ' ', '.', ',', ';', ':', '!', '?'].indexOf(c.toLowerCase()) !== -1
   }
 
-	let phrase = msg.content.replace("h+hify ", "");
+	let phrase = args.join(" ");
 	let hifiedPhrase = "";
 	for (let h = 0; h != phrase.length; h++) {
 		let letter = phrase.charAt(h);
@@ -22,8 +22,8 @@ exports.run = (client, msg, args) => {
 			}
 		}
 	}
-	msg.channel.send({
-		embed: {
+	return({
+      embeds: [{
 			color: parseInt(client.confiq.embedColor),
       title: "Here's your converted text:",
 			description: hifiedPhrase,
@@ -31,6 +31,6 @@ exports.run = (client, msg, args) => {
 				text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
 				icon_url: client.confiq.pfpurl
 			}
-		}
+		}]
 	})
 }

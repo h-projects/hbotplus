@@ -18,8 +18,7 @@ exports.run = (client, msg, args) => {
     }
   }
   let membg = msg.channel.guild.members.cache.find(r => r.id === memb.id);
-  let userstr = membg.user.username + (membg.displayName ? membg.displayName : "") + (memb.presence.game ? memb.presence.game.state : "");
-  console.log(userstr);
+  let userstr = membg.user.username + (membg.displayName ? membg.displayName : "");
   for(i = 0; i != userstr.length; i++)
   {
     if(userstr.charAt(i).toLowerCase() == "h")
@@ -28,15 +27,15 @@ exports.run = (client, msg, args) => {
     }
   }
   let hpercent = 100 / (userstr.length / hquantity);
-	msg.channel.send({
-		embed: {
+	return({
+      embeds: [{
 			color: parseInt(client.confiq.embedColor),
 			title: membg.user.username + "'s h percentage is " + hpercent.toFixed(2) + "%",
 		footer: {
 				text: `Command requested by ${msg.author.tag} - ${client.confiq.footers[Math.floor(Math.random() * client.confiq.footers.length)]}`,
 				icon_url: client.confiq.pfpurl
 			}
-		}
+		}]
 	})
 
 
